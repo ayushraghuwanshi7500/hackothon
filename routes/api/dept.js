@@ -144,7 +144,8 @@ router.get('/:mydept/vacancy', async (req, res) => {
       getalljobdetail.map((job) => {
         return {
           vacancy: job.vacancy,
-          position: job.position
+          position: job.position,
+          id: job._id
         };
       })
     );
