@@ -155,4 +155,19 @@ router.get('/:mydept/vacancy', async (req, res) => {
   }
 });
 
+// @route   GET api/dept/jobdetails/:jobdetail_id
+// @desc    Get job detail
+
+router.get('/jobdetails/:jobdetail_id', async (req, res) => {
+  try {
+    const getalljobdetail = await JobDetail.find({
+      _id: req.params.jobdetail_id
+    });
+    res.send(getalljobdetail);
+  } catch (err) {
+    console.error('this' + err.message + 'this msg');
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;
