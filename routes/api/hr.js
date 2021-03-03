@@ -30,7 +30,8 @@ router.get('/jobisposted', async (req, res) => {
         return {
           mydept: job.mydept,
           vacancy: job.vacancy,
-          position: job.position
+          position: job.position,
+          id: job._id
         };
       })
     );
@@ -51,7 +52,8 @@ router.get('/jobisnotposted', async (req, res) => {
         return {
           mydept: job.mydept,
           vacancy: job.vacancy,
-          position: job.position
+          position: job.position,
+          id: job._id
         };
       })
     );
