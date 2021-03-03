@@ -123,5 +123,35 @@ router.get('/getalljobdetail', async (req, res) => {
     res.status(500).send(err);
   }
 });
+// @route   GET api/dept/getalldept
+// @desc    Get All dept
+
+router.get('/getalldept', async (req, res) => {
+  try {
+    const getalljobdetail = await Dept.find();
+    res.json(getalljobdetail);
+  } catch (err) {
+    console.error('this' + err.message + 'this msg');
+    res.status(500).send(err);
+  }
+});
+// @route   GET api/dept/:mydept/vacancy
+// @desc    Get vacancy by deptid
+router.get('/:mydept/vacancy', async (req, res) => {
+  try {
+    const getalljobdetail = await JobDetail.find({ deptid: req.params.mydept });
+    res.json(
+      getalljobdetail.map((job) => {
+        return {
+          vacancy: job.vacancy,
+          position: job.position
+        };
+      })
+    );
+  } catch (err) {
+    console.error('this' + err.message + 'this msg');
+    res.status(500).send(err);
+  }
+});
 
 module.exports = router;

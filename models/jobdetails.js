@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const JobDetailSchema = new mongoose.Schema({
+  deptid: {
+    type: String
+  },
   mydept: {
     type: String,
     required: true
