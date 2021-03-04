@@ -207,4 +207,24 @@ router.get('/jobdetails/:jobdetail_id', async (req, res) => {
   }
 });
 
+// @route   GET api/dept/:dept_id/skills
+// @desc    get skills by department id
+
+router.get('/:dept_id/skills', async (req, res) => {
+  try {
+    const dept = await Dept.find({ _id: req.params.dept_id });
+    console.log(dept);
+    res.json(
+      dept.map((job) => {
+        return {
+          skills: job.skills
+        };
+      })
+    );
+  } catch (err) {
+    console.error('this' + err.message + 'this msg');
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;
