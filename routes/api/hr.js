@@ -4,6 +4,7 @@ const { check, validationResult } = require('express-validator/check');
 const bcrypt = require('bcrypt');
 const JobDetail = require('../../models/jobdetails');
 const Hr = require('../../models/hr');
+const JobForm = require('../../models/jobform');
 
 // @route   POST api/hr
 // @desc    Create HR
@@ -139,5 +140,22 @@ router.get('/jobisnotposted', async (req, res) => {
     res.status(500).send(err);
   }
 });
+// @route GET api/hr/applications/:job_id
+// @desc  GET all job applications by job detail id
 
+router.get('/applications/:job_id', async (req, res) => {
+  try {
+    const getapplications = await JobForm.find({
+      appliedforjobid: req.params.job_id
+    });
+    if (getapplications.length === 0) {
+      return res.send('There are no applications for this jobs');
+    }
+
+    res.json(getapplications);
+  } catch (err) {
+    console.error('this' + err.message + 'this msg');
+    res.status(500).send(err);
+  }
+});
 module.exports = router;

@@ -32,6 +32,9 @@ const JobFormSchema = new mongoose.Schema({
   },
   resume: {
     type: String
+  },
+  appliedforjobid: {
+    type: String
   }
 });
 

@@ -111,7 +111,8 @@ router.post(
       vacancy,
       workexp,
       position,
-      isposted
+      isposted,
+      deptid
     } = req.body;
     console.log(mydept + 'my');
     try {
@@ -126,7 +127,7 @@ router.post(
           .status(400)
           .json({ errors: [{ msg: 'Department does not exists' }] });
       }
-      //   res.send(jobdetail);
+      // res.send(jobdetail);
       // create job details
       jobdetail = new JobDetail({
         mydept,
@@ -136,7 +137,8 @@ router.post(
         vacancy,
         workexp,
         position,
-        isposted
+        isposted,
+        deptid
       });
 
       console.log(jobdetail);
