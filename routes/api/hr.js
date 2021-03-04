@@ -60,18 +60,14 @@ router.post(
     try {
       let hr = await Hr.findOne({ email });
       if (!hr) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+        res.status(400).json({ isLoggedIn: false });
       }
 
       const isMatch = await bcrypt.compare(password, hr.password);
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+        return res.status(400).json({ isLoggedIn: false });
       }
-      res.send(hr);
+      res.json({ isLoggedIn: true, userId: hr._id });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
