@@ -4,10 +4,10 @@ const JobDetailSchema = new mongoose.Schema({
   deptid: {
     type: String
   },
-  mydept: {
-    type: String,
-    required: true
-  },
+  //   mydept: {
+  //     type: String,
+  //     required: true
+  //   },
   position: {
     type: String,
     required: true
