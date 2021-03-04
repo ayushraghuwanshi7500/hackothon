@@ -130,7 +130,11 @@ router.post(
         return res.status(400).json({ isLoggedIn: false });
       }
 
-      res.json({ isLoggedIn: true, userId: applicant._id });
+      res.json({
+        isLoggedIn: true,
+        userId: applicant._id,
+        usertype: 'applicant'
+      });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

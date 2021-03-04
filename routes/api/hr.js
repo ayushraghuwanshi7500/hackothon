@@ -67,7 +67,7 @@ router.post(
       if (!isMatch) {
         return res.status(400).json({ isLoggedIn: false });
       }
-      res.json({ isLoggedIn: true, userId: hr._id });
+      res.json({ isLoggedIn: true, userId: hr._id, userType: 'hr' });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
