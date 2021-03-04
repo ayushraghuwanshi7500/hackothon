@@ -46,6 +46,43 @@ router.post(
     res.send('Deparement created');
   }
 );
+// @route   POST api/dept/login
+// @desc    Login Department
+
+router.post(
+  '/login',
+  [
+    check('password', 'Password is required').exists(),
+    check('mydept', 'ID is required').not().isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { mydept, password } = req.body;
+    try {
+      let dept = await Dept.findOne({ mydept });
+      if (!dept) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+
+      const isMatch = await bcrypt.compare(password, dept.password);
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+      res.send(dept);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+    res.send('Department Logged In');
+  }
+);
 
 // @route   POST api/dept/jobdetail
 // @desc    Create Job Detail

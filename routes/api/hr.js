@@ -1,6 +1,83 @@
 const express = require('express');
 const router = express.Router();
+const { check, validationResult } = require('express-validator/check');
+const bcrypt = require('bcrypt');
 const JobDetail = require('../../models/jobdetails');
+const Hr = require('../../models/hr');
+
+// @route   POST api/hr
+// @desc    Create HR
+router.post(
+  '/',
+  [
+    check('name', 'Name is required').not().isEmpty(),
+    check('password', 'Minimum password length must be 6').isLength({ min: 6 }),
+    check('email', 'Not a valid email').isEmail()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { name, email, password } = req.body;
+    try {
+      let hr = await Hr.findOne({ email });
+      if (hr) {
+        return res.status(400).json({ errors: [{ msg: 'HR already exists' }] });
+      }
+      hr = new Hr({
+        password,
+
+        name,
+        email
+      });
+      const salt = await bcrypt.genSalt(10);
+      hr.password = await bcrypt.hash(password, salt);
+      await hr.save();
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+    res.send('HR created');
+  }
+);
+// @route   POST api/hr/login
+// @desc    Login HR
+
+router.post(
+  '/login',
+  [
+    check('password', 'Password is required').exists(),
+    check('email', 'Not a valid email').isEmail()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { email, password } = req.body;
+    try {
+      let hr = await Hr.findOne({ email });
+      if (!hr) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+
+      const isMatch = await bcrypt.compare(password, hr.password);
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+      res.send(hr);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+    res.send('HR Logged In');
+  }
+);
 
 // @route   POST api/hr/jobisposted/:job_id
 // @desc    Posting a job to Applicants
