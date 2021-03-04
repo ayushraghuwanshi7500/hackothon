@@ -133,7 +133,7 @@ router.post(
       res.json({
         isLoggedIn: true,
         userId: applicant._id,
-        usertype: 'applicant'
+        userType: 'applicant'
       });
     } catch (err) {
       console.error(err.message);
