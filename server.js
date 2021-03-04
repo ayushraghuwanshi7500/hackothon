@@ -17,6 +17,7 @@ app.use('/api/dept', require('./routes/api/dept'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/hr', require('./routes/api/hr'));
 app.use('/api/applicant', require('./routes/api/applicant'));
+app.use('/uploads', express.static('uploads'));
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

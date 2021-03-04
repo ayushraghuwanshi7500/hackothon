@@ -4,11 +4,14 @@ const { check, validationResult } = require('express-validator/check');
 const bcrypt = require('bcrypt');
 const JobForm = require('../../models/jobform');
 const Applicant = require('../../models/applicant');
+const upload = require('../../middleware/upload');
+const jobform = require('../../models/jobform');
 // @route   POST api/applicant
 // @desc    Create job form
 
 router.post(
   '/jobform',
+  upload.single('resume'),
   [
     check('name', 'Name is required').not().isEmpty(),
     check('address', 'Address is required').not().isEmpty(),
@@ -48,6 +51,10 @@ router.post(
         description,
         skills
       });
+
+      if (req.file) {
+        jobform.resume = req.file.path;
+      }
 
       await jobform.save();
     } catch (err) {

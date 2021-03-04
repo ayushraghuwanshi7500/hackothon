@@ -29,6 +29,9 @@ const JobFormSchema = new mongoose.Schema({
   skills: {
     type: [String],
     required: true
+  },
+  resume: {
+    type: String
   }
 });
 
